@@ -318,7 +318,9 @@ def main():
                         suggested_species = get_suggested_species()
                         suggestedSpecie_text = gr.Dropdown(choices=suggested_species, label="Suggested Specie", interactive=True, allow_custom_value=True, filterable=True)
                         suggestedSpecie_button = gr.Button("Suggested Specie", variant="primary", size="sm")
-                        
+                    
+                    comment_box.render()
+
                     audio_file_table.select(fn=on_audio_selected, inputs=[audio_file_table], outputs=[mel_spectrogram_output, audio_input, species_button, selected_row_index, sample_audio, sample_image, suggestedSpecie_text, audio_file_table, date_text, time_text, comment_box])
                     
                     species_button.click(on_species_button_clicked, inputs=[audio_file_table, selected_row_index, comment_box], outputs=[audio_file_table, selected_row_index, audio_input, mel_spectrogram_output, species_button, sample_audio, sample_image])
@@ -329,33 +331,33 @@ def main():
                     
                     save_table_btn.click(fn=save_table_to_csv, inputs=audio_file_table, outputs=csv_status)
                     load_csv_btn.click(fn=update_table_with_validation, inputs=audio_file_table, outputs=[audio_file_table, csv_status])
-
-                with gr.Column():
-                    gr.Markdown("## Sample Audio & Spectrogram")
-                    sample_audio.render()
-                    sample_image.render()
-                    with gr.Row():
-                        prev_button = gr.Button("←", variant="secondary")
-                        next_button = gr.Button("→", variant="secondary")
                     
-                    prev_button.click(
-                        fn=lambda: update_audio_and_image(load_prev_sample()), 
-                        inputs=[], 
-                        outputs=[sample_audio, sample_image]
-                    )
-                    next_button.click(
-                        fn=lambda: update_audio_and_image(load_next_sample()), 
-                        inputs=[], 
-                        outputs=[sample_audio, sample_image]
-                    )
-                    # Add folder selection button
-                    browse_samplefolder_btn = gr.Button("Select Sample Audio Folder", min_width=1)
-                    browse_samplefolder_btn.click(on_browse_sample_audio_folder, inputs=[], outputs=[])
+                # with gr.Column():
+                #     gr.Markdown("## Sample Audio & Spectrogram")
+                #     sample_audio.render()
+                #     sample_image.render()
+                #     with gr.Row():
+                #         prev_button = gr.Button("←", variant="secondary")
+                #         next_button = gr.Button("→", variant="secondary")
+                    
+                #     prev_button.click(
+                #         fn=lambda: update_audio_and_image(load_prev_sample()), 
+                #         inputs=[], 
+                #         outputs=[sample_audio, sample_image]
+                #     )
+                #     next_button.click(
+                #         fn=lambda: update_audio_and_image(load_next_sample()), 
+                #         inputs=[], 
+                #         outputs=[sample_audio, sample_image]
+                #     )
+                #     # Add folder selection button
+                #     browse_samplefolder_btn = gr.Button("Select Sample Audio Folder", min_width=1)
+                #     browse_samplefolder_btn.click(on_browse_sample_audio_folder, inputs=[], outputs=[])
 
-                    # Add observations box to write
-                    # gr.Textbox(label="Observations", type="text", placeholder="Write your observations here...", scale=3)
-                    # comment_box = gr.Textbox(label="Comments", type="text", placeholder="Write your comments here...", scale=3)
-                    comment_box.render()
+                #     # Add observations box to write
+                #     # gr.Textbox(label="Observations", type="text", placeholder="Write your observations here...", scale=3)
+                #     # comment_box = gr.Textbox(label="Comments", type="text", placeholder="Write your comments here...", scale=3)
+                    
         with gr.Tab("Tutorial"):
             tutorial_tab()
 

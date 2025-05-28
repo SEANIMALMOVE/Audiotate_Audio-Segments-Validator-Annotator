@@ -174,3 +174,7 @@ cython_debug/
 Audios/*
 SuggestedSpecies/suggested_species_Nacho.txt
 SuggestedSpecies/suggested_species_Laura.txt
+
+
+# Audios samples for testing
+3_Fondeo2_Model31/*

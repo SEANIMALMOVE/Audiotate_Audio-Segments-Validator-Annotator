@@ -24,9 +24,12 @@ def load_csv_and_copy_validation(audio_table):
         file_path = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv")])
         if file_path:
             df = pd.read_csv(file_path)
-            # Map per File from audio table and df and change Validation value to df value
-            audio_table = audio_table.merge(df[['File', 'Validation', 'Suggested Specie']], on='File', how='left')
-            
+            # Merge also the Comment column if it exists in the CSV
+            merge_cols = ['File', 'Validation', 'Suggested Specie']
+            if 'Comment' in df.columns:
+                merge_cols.append('Comment')
+            audio_table = audio_table.merge(df[merge_cols], on='File', how='left')
+
             # If exists Validation_x and Validation_y, keep Validation from df
             if 'Validation_x' in audio_table and 'Validation_y' in audio_table:
                 audio_table['Validation'] = audio_table['Validation_y']
@@ -35,14 +38,18 @@ def load_csv_and_copy_validation(audio_table):
             if 'Suggested Specie_x' in audio_table and 'Suggested Specie_y' in audio_table:
                 audio_table['Suggested Specie'] = audio_table['Suggested Specie_y']
                 audio_table = audio_table.drop(columns=['Suggested Specie_x', 'Suggested Specie_y'])
+            # If exists Comment_x and Comment_y, keep Comment from df
+            if 'Comment_x' in audio_table and 'Comment_y' in audio_table:
+                audio_table['Comment'] = audio_table['Comment_y']
+                audio_table = audio_table.drop(columns=['Comment_x', 'Comment_y'])
 
             audio_table = audio_table.style.apply(apply_styles, axis=1)
 
             root.destroy()
-            return audio_table, "Validation Values Loaded"  # Devuelve el DataFrame de Pandas con los valores de validación
+            return audio_table, "Validation Values Loaded"
         else:
             root.destroy()
-            return pd.DataFrame(), "ERROR: No Validation File"  # Devuelve un DataFrame vacío si se cancela la operación
+            return pd.DataFrame(), "ERROR: No Validation File"
     except Exception as e:
         return pd.DataFrame(), f"ERROR: {str(e)}"
     
