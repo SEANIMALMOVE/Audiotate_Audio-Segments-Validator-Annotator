@@ -12,7 +12,7 @@ import os
 from audio_processing import load_audio_files_from_folder, update_audio_and_image, list_audio_files_from_folder, extract_time_from_filename, extract_date_from_filename
 from species_management import add_suggested_species, get_suggested_species, initialize_suggested_species_file, initialize_comments_file, add_comment, get_comments
 from data_processing import save_table_to_csv, update_table_with_validation
-from ui_components import build_footer, tutorial_tab, on_audio_selected, update_validation, get_sample_audio_and_image
+from ui_components import build_footer, tutorial_tab, on_audio_selected, update_validation
 
 # Global variables
 from config import Globals
@@ -56,20 +56,6 @@ def on_browse(data_type):
         root.destroy()
         return "Please select an upload option", pd.DataFrame()
 
-def on_browse_sample_audio_folder():
-
-    root = Tk()
-    root.attributes("-topmost", True)
-    root.withdraw()
-
-    folder = filedialog.askdirectory()
-    if folder:
-        Globals.set_sample_audio_dir(os.path.normpath(folder))
-        # print("New sample audio folder selected:", sample_audio_dir)
-        root.destroy()
-    else:
-        root.destroy()
-
 
 # Buttons
 
@@ -101,19 +87,15 @@ def on_species_button_clicked(audio_table, selected_row_index, comment):
 
         if new_specie_name != Globals.get_current_specie_name():
             Globals.set_current_specie_name(new_specie_name)
-            
-        sample_audio, sample_image = get_sample_audio_and_image()
-
-        Globals.set_current_sample_audio_file(sample_audio)
 
         audio_path = audio_files["Path"][selected_row_index]
         time = extract_time_from_filename(audio_path)
         date = extract_date_from_filename(audio_path)
 
-        return audio_table, selected_row_index, audio, image, Globals.get_current_specie_name(), Globals.get_current_sample_audio_file(), sample_image, Globals.get_current_specie_name(), date, time
+        return audio_table, selected_row_index, audio, image, Globals.get_current_specie_name(), Globals.get_current_specie_name(), date, time
     else:
         # If it's the last row, stop the audio and return the current state
-        return audio_table, selected_row_index, None, None, Globals.get_current_specie_name(), None, None, Globals.get_current_specie_name(), None, None
+        return audio_table, selected_row_index, None, None, Globals.get_current_specie_name(), Globals.get_current_specie_name(), None, None
 
 def on_unknown_button_clicked(audio_table, selected_row_index, comment):
 
@@ -130,12 +112,8 @@ def on_unknown_button_clicked(audio_table, selected_row_index, comment):
 
     if new_specie_name != Globals.get_current_specie_name():
         Globals.set_current_specie_name(new_specie_name)
-        
-    sample_audio, sample_image = get_sample_audio_and_image()
 
-    Globals.set_current_sample_audio_file(sample_audio)
-
-    return audio_table, selected_row_index, audio, image, Globals.get_current_specie_name(), Globals.get_current_sample_audio_file(), sample_image, Globals.get_current_specie_name()
+    return audio_table, selected_row_index, audio, image, Globals.get_current_specie_name(), Globals.get_current_specie_name()
 
 def on_bird_button_clicked(audio_table, selected_row_index, comment):
 
@@ -152,12 +130,8 @@ def on_bird_button_clicked(audio_table, selected_row_index, comment):
 
     if new_specie_name != Globals.get_current_specie_name():
         Globals.set_current_specie_name(new_specie_name)
-        
-    sample_audio, sample_image = get_sample_audio_and_image()
 
-    Globals.set_current_sample_audio_file(sample_audio)
-
-    return audio_table, selected_row_index, audio, image, Globals.get_current_specie_name(), Globals.get_current_sample_audio_file(), sample_image, Globals.get_current_specie_name()
+    return audio_table, selected_row_index, audio, image, Globals.get_current_specie_name(), Globals.get_current_specie_name()
 
 def on_other_button_clicked(audio_table, selected_row_index, comment):    
     
@@ -174,12 +148,8 @@ def on_other_button_clicked(audio_table, selected_row_index, comment):
 
     if new_specie_name != Globals.get_current_specie_name():
         Globals.set_current_specie_name(new_specie_name)
-        
-    sample_audio, sample_image = get_sample_audio_and_image()
 
-    Globals.set_current_sample_audio_file(sample_audio)
-
-    return audio_table, selected_row_index, audio, image, Globals.get_current_specie_name(), Globals.get_current_sample_audio_file(), sample_image, Globals.get_current_specie_name()
+    return audio_table, selected_row_index, audio, image, Globals.get_current_specie_name(), Globals.get_current_specie_name()
 
 def on_suggested_specie_button_clicked(audio_table, selected_row_index, suggested_specie_text, comment):
     
@@ -204,22 +174,11 @@ def on_suggested_specie_button_clicked(audio_table, selected_row_index, suggeste
 
     if new_specie_name != Globals.get_current_specie_name():
         Globals.set_current_specie_name(new_specie_name)
-        
-    sample_audio, sample_image = get_sample_audio_and_image()
 
-    Globals.set_current_sample_audio_file(sample_audio)
-
-    return audio_table, gr.update(choices=get_suggested_species()), selected_row_index, audio, image, Globals.get_current_specie_name(), Globals.get_current_sample_audio_file(), sample_image, Globals.get_current_specie_name()
+    return audio_table, gr.update(choices=get_suggested_species()), selected_row_index, audio, image, Globals.get_current_specie_name(), Globals.get_current_specie_name()
 
 # Use a gr.Dataframe or gr.Dynamic for audio file selection
 audio_file_table = gr.Dataframe()
-
-# Function to get the list of sample files
-def get_sample_files():
-    # return sorted if audio fie .WAV, .wav, .MP3, .mp3
-    specie_audio_dir = Globals.get_sample_audio_dir() + os.sep + Globals.get_current_specie_name()
-    sample_audio_files = list_audio_files_from_folder(specie_audio_dir)
-    return sample_audio_files
 
 def load_next_audio_file():
     audio_files = Globals.get_audio_file_list()
@@ -235,24 +194,6 @@ def load_prev_audio_file():
     Globals.set_current_row_index(prev_index)
     current_audio_file = audio_files["Path"][prev_index]
     return current_audio_file
-
-# Function to load the next sample
-def load_next_sample():
-
-    sample_files = get_sample_files()
-
-    current_index = sample_files.index(Globals.get_current_sample_audio_file())
-    next_index = (current_index + 1) % len(sample_files)
-    Globals.set_current_sample_audio_file(sample_files[next_index])
-    return Globals.get_current_sample_audio_file()
-
-# Function to load the previous sample
-def load_prev_sample():
-    sample_files = get_sample_files()
-    current_index = sample_files.index(Globals.get_current_sample_audio_file())
-    prev_index = (current_index - 1) % len(sample_files)
-    Globals.set_current_sample_audio_file(sample_files[prev_index])
-    return Globals.get_current_sample_audio_file()
 
 def main():
     """
@@ -272,8 +213,6 @@ def main():
     if not comments:  # If there are no comments, set the default option
         comments = ["No Comments"]
 
-    sample_audio = gr.Audio(label="Sample Audio per specie", type="filepath")
-    sample_image = gr.Image("Sample Mel Spectrogram")
     audio_file_table = gr.Dataframe(headers=["Idx", "File", "Specie", "Suggested Specie"], type="pandas", interactive=False)
     comment_box = gr.Dropdown(value="No comments", choices=comments, label="Comments", interactive=True, allow_custom_value=True, filterable=True)
 
@@ -287,14 +226,14 @@ def main():
             browse_btn.click(on_browse, inputs=data_type, outputs=[input_path, audio_file_table])
         with gr.Tab("Validate BirdNET predictions"):
             with gr.Row():
-                with gr.Column():
+                with gr.Column(scale=1):
                     gr.Markdown("## Audio Files")
                     audio_file_table.render()
                     save_table_btn = gr.Button("Save Table", variant="primary")
                     load_csv_btn = gr.Button("Load CSV and Copy Validation", variant="primary")
                     csv_status = gr.Label(value="No Validation Saved or Loaded")  # To display the status of the save operation
 
-                with gr.Column():
+                with gr.Column(scale=2):
                     gr.Markdown("## Validation")
                     # Display Date and Time
                     with gr.Row():
@@ -318,46 +257,19 @@ def main():
                         suggested_species = get_suggested_species()
                         suggestedSpecie_text = gr.Dropdown(choices=suggested_species, label="Suggested Specie", interactive=True, allow_custom_value=True, filterable=True)
                         suggestedSpecie_button = gr.Button("Suggested Specie", variant="primary", size="sm")
+                        
+                    audio_file_table.select(fn=on_audio_selected, inputs=[audio_file_table], outputs=[mel_spectrogram_output, audio_input, species_button, selected_row_index, suggestedSpecie_text, audio_file_table, date_text, time_text, comment_box])
                     
-                    comment_box.render()
-
-                    audio_file_table.select(fn=on_audio_selected, inputs=[audio_file_table], outputs=[mel_spectrogram_output, audio_input, species_button, selected_row_index, sample_audio, sample_image, suggestedSpecie_text, audio_file_table, date_text, time_text, comment_box])
-                    
-                    species_button.click(on_species_button_clicked, inputs=[audio_file_table, selected_row_index, comment_box], outputs=[audio_file_table, selected_row_index, audio_input, mel_spectrogram_output, species_button, sample_audio, sample_image])
-                    unknown_button.click(on_unknown_button_clicked, inputs=[audio_file_table, selected_row_index, comment_box], outputs=[audio_file_table, selected_row_index, audio_input, mel_spectrogram_output, species_button, sample_audio, sample_image])
-                    other_button.click(on_other_button_clicked, inputs=[audio_file_table, selected_row_index, comment_box], outputs=[audio_file_table, selected_row_index, audio_input, mel_spectrogram_output, species_button, sample_audio, sample_image])
-                    bird_button.click(on_bird_button_clicked, inputs=[audio_file_table, selected_row_index, comment_box], outputs=[audio_file_table, selected_row_index, audio_input, mel_spectrogram_output, species_button, sample_audio, sample_image])
-                    suggestedSpecie_button.click(on_suggested_specie_button_clicked, inputs=[audio_file_table, selected_row_index, suggestedSpecie_text, comment_box], outputs=[audio_file_table, suggestedSpecie_text, selected_row_index, audio_input, mel_spectrogram_output, species_button, sample_audio, sample_image, suggestedSpecie_text])
+                    species_button.click(on_species_button_clicked, inputs=[audio_file_table, selected_row_index, comment_box], outputs=[audio_file_table, selected_row_index, audio_input, mel_spectrogram_output, species_button])
+                    unknown_button.click(on_unknown_button_clicked, inputs=[audio_file_table, selected_row_index, comment_box], outputs=[audio_file_table, selected_row_index, audio_input, mel_spectrogram_output, species_button])
+                    other_button.click(on_other_button_clicked, inputs=[audio_file_table, selected_row_index, comment_box], outputs=[audio_file_table, selected_row_index, audio_input, mel_spectrogram_output, species_button])
+                    bird_button.click(on_bird_button_clicked, inputs=[audio_file_table, selected_row_index, comment_box], outputs=[audio_file_table, selected_row_index, audio_input, mel_spectrogram_output, species_button])
+                    suggestedSpecie_button.click(on_suggested_specie_button_clicked, inputs=[audio_file_table, selected_row_index, suggestedSpecie_text, comment_box], outputs=[audio_file_table, suggestedSpecie_text, selected_row_index, audio_input, mel_spectrogram_output, species_button, suggestedSpecie_text])
                     
                     save_table_btn.click(fn=save_table_to_csv, inputs=audio_file_table, outputs=csv_status)
                     load_csv_btn.click(fn=update_table_with_validation, inputs=audio_file_table, outputs=[audio_file_table, csv_status])
                     
-                # with gr.Column():
-                #     gr.Markdown("## Sample Audio & Spectrogram")
-                #     sample_audio.render()
-                #     sample_image.render()
-                #     with gr.Row():
-                #         prev_button = gr.Button("←", variant="secondary")
-                #         next_button = gr.Button("→", variant="secondary")
-                    
-                #     prev_button.click(
-                #         fn=lambda: update_audio_and_image(load_prev_sample()), 
-                #         inputs=[], 
-                #         outputs=[sample_audio, sample_image]
-                #     )
-                #     next_button.click(
-                #         fn=lambda: update_audio_and_image(load_next_sample()), 
-                #         inputs=[], 
-                #         outputs=[sample_audio, sample_image]
-                #     )
-                #     # Add folder selection button
-                #     browse_samplefolder_btn = gr.Button("Select Sample Audio Folder", min_width=1)
-                #     browse_samplefolder_btn.click(on_browse_sample_audio_folder, inputs=[], outputs=[])
-
-                #     # Add observations box to write
-                #     # gr.Textbox(label="Observations", type="text", placeholder="Write your observations here...", scale=3)
-                #     # comment_box = gr.Textbox(label="Comments", type="text", placeholder="Write your comments here...", scale=3)
-                    
+                    comment_box.render()
         with gr.Tab("Tutorial"):
             tutorial_tab()
 

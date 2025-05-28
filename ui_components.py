@@ -30,8 +30,6 @@ def on_audio_selected(audio_table, evt: SelectData):
             - audio_path (str): The path of the selected audio file.
             - species_name (str): The name of the species associated with the selected audio.
             - selected_row_index (int): The index of the selected row.
-            - sample_audio (str): The path of a sample audio file for the selected species.
-            - sample_image (numpy.ndarray): The mel spectrogram image of the sample audio file.
             - suggested_specie (str): The suggested species for the selected audio.
 
             If no audio is selected or an error occurs, the tuple will contain None values.
@@ -52,9 +50,7 @@ def on_audio_selected(audio_table, evt: SelectData):
             comment = audio_table["Comment"][selected_row_index] if "Comment" in audio_table else None
             audio_path, mel_spectrogram_image = update_audio_and_image(audio_path)
 
-            sample_audio, sample_image = get_sample_audio_and_image()
-
-            return mel_spectrogram_image, audio_path, species_name, selected_row_index, sample_audio, sample_image, suggested_specie, audio_table_styled, date, time, comment
+            return mel_spectrogram_image, audio_path, species_name, selected_row_index, suggested_specie, audio_table_styled, date, time, comment
     return None, None, "Specie", -1, None, None, None, None
 
 def apply_styles(row):
@@ -71,19 +67,6 @@ def apply_styles(row):
         return ['background-color: #D3D3D3'] * len(row)
     else:
         return [''] * len(row)  # Default, no styling
-
-def get_sample_audio_and_image():
-    sample_audio_files = list_audio_files_from_folder(Globals.get_sample_audio_dir() + os.sep + Globals.get_current_specie_name())
-    if sample_audio_files:
-        sample_audio, sample_image = update_audio_and_image(sample_audio_files[0])
-    else:
-        sample_audio = None
-        sample_image = None
-        print("No audio files found for the selected species")
-
-    Globals.set_current_sample_audio_file(sample_audio)
-
-    return sample_audio, sample_image
 
 # Diccionario global para almacenar los estilos de las filas
 row_styles = {}
