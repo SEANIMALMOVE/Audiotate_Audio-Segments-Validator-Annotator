@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Audiotate: A GUI tool for human annotation and validation of audio segments"
+abstract: "Audiotate is a Python and Gradio-based application that facilitates manual annotation and validation of short audio segments. It allows users to listen, visualize spectrograms, assign or correct labels, and export annotations as CSV files. Originally developed for validating BirdNET predictions, Audiotate supports any folder-structured dataset of audio segments, enhancing data quality for ecological sound analyses and deep learning model training."
+authors:
+  - family-names: Márquez-Rodríguez
+    given-names: Alba
+    affiliation: "University of Cádiz, Institute of Marine Research (INMAR), and International Campus of Excellence in Marine Science (CEIMAR)"
+    orcid: "https://orcid.org/0000-0003-2960-7757"
+repository-code: "https://github.com/SEANIMALMOVE/Audiotate_Audio-Segments-Validator-Annotator"
+license: "MIT"
+version: "1.7.0"
+date-released: "2025-03-21"
+keywords:
+  - audio annotation
+  - validation
+  - deep learning
+  - sound analysis
+  - GUI
+  - ecology
+  - Gradio
+  - Python
+preferred-citation:
+  type: software
+  title: "Audiotate: audio segments validator-annotator"
+  authors:
+    - family-names: Márquez-Rodríguez
+      given-names: Alba
+  version: "1.7.0"
+  repository-code: "https://github.com/SEANIMALMOVE/Audiotate_Audio-Segments-Validator-Annotator"
+  license: "MIT"
+  year: 2025
