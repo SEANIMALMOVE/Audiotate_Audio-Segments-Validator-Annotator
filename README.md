@@ -3,6 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
 [![Gradio](https://img.shields.io/badge/Framework-Gradio-orange.svg)](https://gradio.app/)
+[![DOI](https://zenodo.org/badge/829889197.svg)](https://doi.org/10.5281/zenodo.19252331)
 
 ## Overview
 
@@ -24,12 +25,13 @@ Although originally inspired by bird sound validation workflows with BirdNET, **
 If you use this application, please cite the software:
 
 ```
-@misc{BirdNETPredictionsValidator2024,
-  author       = {Márquez-Rodríguez, Alba},
+@misc{marquez2024audiotate,
+  author       = {Márquez-Rodríguez, Alba and Rollán, Laura and Pérez Gimeno, Neus},
   title        = {Audiotate: Audio segments validator annotator},
   year         = {2024},
-  howpublished = {\url{https://https://github.com/SEANIMALMOVE/Audiotate_Audio-Segments-Validator-Annotator}},
-  note         = {Version 1.6, accessed: YYYY-MM-DD},
+  howpublished = {\url{https://github.com/SEANIMALMOVE/Audiotate_Audio-Segments-Validator-Annotator}},
+  note         = {Version 1.7.1, Accessed: YYYY-MM-DD},
+  doi          = {10.5281/zenodo.19252332}
 }
 ```
 
